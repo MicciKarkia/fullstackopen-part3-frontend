@@ -36,54 +36,14 @@ const App = () => {
     const isFound = persons.some(
       (person) => person.name.toLowerCase() === newName.toLowerCase()
     );
-
-    const toUpdate = persons.filter(
-      (person) => person.name.toLowerCase() === newName.toLowerCase()
-    );
-
-    const addNewNumber = () => {
-      const changeNumberObject = {
-        ...toUpdate[0],
-        number: personObject.number,
-      };
-      console.log("changedNumber: ", changeNumberObject);
-      console.log("message is: ", message);
-
-      if (
-        window.confirm(
-          `${changeNumberObject.name} is already added to phonebook, replace the old number with a new one?`
-        )
-      ) {
-        const id = changeNumberObject.id;
-        personService
-          .update(id, changeNumberObject)
-          .then((returnedPerson) => {
-            setPersons(
-              persons.map((person) =>
-                person.id !== returnedPerson.id ? person : returnedPerson
-              )
-            );
-            showMessage({
-              type: "success",
-              content: `Changed ${returnedPerson.name}'s number`,
-            });
-          })
-          .catch((error) => {
-            showMessage({
-              type: "error",
-              content: `Information of ${changeNumberObject.name} has already been removed from server`,
-            });
-            setPersons(
-              persons.filter((person) => person.id !== changeNumberObject.id)
-            );
-          });
-      }
-    };
+    const showPopup = () =>
+      window.alert(`No duplicates! \n${newName} is already added to phonebook`);
 
     const addPersonObject = () => {
       personService
         .create(personObject)
         .then((returnedPerson) => {
+          console.log("returned person:", returnedPerson);
           setPersons(persons.concat(returnedPerson));
           showMessage({
             type: "success",
@@ -91,6 +51,7 @@ const App = () => {
           });
         })
         .catch((error) => {
+          console.log("error: ", error);
           showMessage({
             type: "error",
             content: `Information of ${personObject.name} has already been added from server`,
@@ -99,7 +60,7 @@ const App = () => {
         });
     };
 
-    isFound ? addNewNumber() : addPersonObject();
+    isFound ? showPopup() : addPersonObject();
 
     console.log("persons: ", persons);
     console.log("message is: ", message);
@@ -186,3 +147,76 @@ const App = () => {
 };
 
 export default App;
+
+/*
+
+
+
+const isFound = persons.some(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    const toUpdate = persons.filter(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    const addNewNumber = () => {
+      const changeNumberObject = {
+        ...toUpdate[0],
+        number: personObject.number,
+      };
+      console.log("changedNumber: ", changeNumberObject);
+      console.log("message is: ", message);
+
+      if (
+        window.confirm(
+          `${changeNumberObject.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const id = changeNumberObject.id;
+        personService
+          .update(id, changeNumberObject)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+            showMessage({
+              type: "success",
+              content: `Changed ${returnedPerson.name}'s number`,
+            });
+          })
+          .catch((error) => {
+            showMessage({
+              type: "error",
+              content: `Information of ${changeNumberObject.name} has already been removed from server`,
+            });
+            setPersons(
+              persons.filter((person) => person.id !== changeNumberObject.id)
+            );
+          });
+      }
+    };
+
+    const addPersonObject = () => {
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          showMessage({
+            type: "success",
+            content: `Added ${returnedPerson.name}`,
+          });
+        })
+        .catch((error) => {
+          showMessage({
+            type: "error",
+            content: `Information of ${personObject.name} has already been added from server`,
+          });
+          setPersons(persons.filter((person) => person.id !== personObject.id));
+        });
+    };
+
+    isFound ? addNewNumber() : addPersonObject();
+    */
