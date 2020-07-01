@@ -60,7 +60,7 @@ const App = () => {
             console.log("returned person: ", returnedPerson);
             setPersons(
               persons.map((person) => {
-                console.log("person: ", person);
+                //console.log("person: ", person);
                 return person.id !== returnedPerson.id
                   ? person
                   : returnedPerson;
@@ -80,14 +80,13 @@ const App = () => {
               type: "error",
               content: errorMessage,
             });
-            /*setPersons(
-              persons.filter((person) => person.id !== changeNumberObject.id)
-            );*/
           });
       }
     };
 
     const addPersonObject = () => {
+      console.log("personObject: ", personObject);
+
       personService
         .create(personObject)
         .then((returnedPerson) => {
@@ -136,12 +135,12 @@ const App = () => {
   };
 
   const handleNameChange = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setNewName(event.target.value);
   };
 
   const handleNumberChange = (event) => {
-    console.log(event.target.value);
+    //console.log(event.target.value);
     setNewNumber(event.target.value);
   };
 
